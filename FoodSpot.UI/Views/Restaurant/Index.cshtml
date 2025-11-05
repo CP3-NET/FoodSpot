@@ -1,0 +1,90 @@
+﻿@model IEnumerable<FoodSpot.Model.RestaurantModel>
+
+@{
+    ViewData["Title"] = "Restaurantes";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1><i class="fas fa-utensils"></i> Nossos Restaurantes</h1>
+            <p class="lead">Descubra os melhores restaurantes da cidade</p>
+        </div>
+    </div>
+
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var restaurant in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        @if (!string.IsNullOrEmpty(restaurant.ImageUrl))
+                        {
+                            <img src="@restaurant.ImageUrl" class="card-img-top" alt="@restaurant.Name"
+                                 style="height: 200px; object-fit: cover;"
+                                 onerror="this.src='https://via.placeholder.com/400x200?text=Restaurante'">
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/400x200?text=@restaurant.Name"
+                                 class="card-img-top" alt="@restaurant.Name"
+                                 style="height: 200px; object-fit: cover;">
+                        }
+
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@restaurant.Name</h5>
+
+                            @if (restaurant.Category != null)
+                            {
+                                <span class="badge bg-secondary mb-2">@restaurant.Category.Name</span>
+                            }
+
+                        <p class="card-text text-muted">
+                            @(restaurant.Description?.Length > 100
+                                                    ? restaurant.Description.Substring(0, 100) + "..."
+                                                    : restaurant.Description)
+                    </p>
+
+                            <div class="mb-2">
+                                <span class="badge bg-warning text-dark">
+                                    ⭐ @restaurant.AverageRating.ToString("F1")
+                                </span>
+                                <small class="text-muted">
+                                    (@restaurant.ReviewCount @(restaurant.ReviewCount == 1 ? "avaliação" : "avaliações"))
+                                </small>
+                            </div>
+
+                            <p class="mb-1 small">
+                                <i class="fas fa-map-marker-alt text-danger"></i> @restaurant.Address
+                            </p>
+                            <p class="mb-3 small">
+                                <i class="fas fa-phone text-success"></i> @restaurant.Phone
+                            </p>
+
+                            <div class="mt-auto">
+                                <a href="@Url.Action("Details", "Restaurant", new { id = restaurant.Id })"
+                                   class="btn btn-primary btn-sm w-100">
+                                    <i class="fas fa-eye"></i> Ver Detalhes
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <h4><i class="fas fa-info-circle"></i> Nenhum restaurante encontrado</h4>
+                    <p class="mb-0">Ainda não há restaurantes cadastrados no sistema.</p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+}
