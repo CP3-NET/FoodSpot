@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -12,6 +12,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="9.23.26000" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FOODPSOT.UI\FoodSpot.UI.csproj" />
+    <ProjectReference Include="..\FoodSpot.Business\FoodSpot.Business.csproj" />
+    <ProjectReference Include="..\FoodSpot.Data\FoodSpot.Data.csproj" />
+    <ProjectReference Include="..\FoodSpot.Model\FoodSpot.Model.csproj" />
   </ItemGroup>
 
 </Project>
