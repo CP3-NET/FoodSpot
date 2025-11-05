@@ -27,6 +27,7 @@ namespace FoodSpot.Business.Services
                 .Include(r => r.Category)
                 .Include(r => r.Reviews)
                 .ThenInclude(rev => rev.User)
+                .AsNoTracking()  // ✅ IMPORTANTE: Não rastreia a entidade
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
 
@@ -39,8 +40,20 @@ namespace FoodSpot.Business.Services
 
         public async Task<RestaurantModel> UpdateRestaurantAsync(RestaurantModel restaurant)
         {
+            
+            var existingRestaurant = await _context.Restaurants
+                .AsNoTracking()
+                .FirstOrDefaultAsync(r => r.Id == restaurant.Id);
+
+            if (existingRestaurant == null)
+            {
+                return null;
+            }
+
+           
             _context.Restaurants.Update(restaurant);
             await _context.SaveChangesAsync();
+
             return restaurant;
         }
 

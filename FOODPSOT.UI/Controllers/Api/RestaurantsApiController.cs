@@ -56,11 +56,12 @@ namespace FoodSpot.UI.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var existing = await _restaurantService.GetRestaurantByIdAsync(id);
-            if (existing == null)
+            
+            var updated = await _restaurantService.UpdateRestaurantAsync(restaurant);
+
+            if (updated == null)
                 return NotFound(new { message = "Restaurante não encontrado" });
 
-            await _restaurantService.UpdateRestaurantAsync(restaurant);
             return NoContent();
         }
 
@@ -68,11 +69,11 @@ namespace FoodSpot.UI.Controllers.Api
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRestaurant(int id)
         {
-            var restaurant = await _restaurantService.GetRestaurantByIdAsync(id);
-            if (restaurant == null)
+            var result = await _restaurantService.DeleteRestaurantAsync(id);
+
+            if (!result)
                 return NotFound(new { message = "Restaurante não encontrado" });
 
-            await _restaurantService.DeleteRestaurantAsync(id);
             return NoContent();
         }
 
